@@ -122,7 +122,7 @@ If you are also learning DevOps + AI, feel free to star ⭐ the repo and follow 
 
 ## 📬 Connect With Me
 
-- [Diksha Rawat](https://linkedin.com/in/yourprofile) | LinkedIn
+- [Diksha Rawat](https://linkedin.com/in/diksharawat) | LinkedIn
 
 ---
 
