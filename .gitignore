@@ -1,0 +1,14 @@
+# Terraform files that should never be pushed
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+# Environment variables - contains secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
