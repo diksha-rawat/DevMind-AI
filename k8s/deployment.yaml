@@ -1,0 +1,76 @@
+# This file tells Kubernetes how to run our app
+# Apply with: kubectl apply -f k8s/deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devmind-ai-app
+  namespace: devmind-ai    # the namespace we created with Terraform
+  labels:
+    app: devmind-ai-app
+spec:
+  # Run 2 copies of our app for reliability
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devmind-ai-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1          # add 1 new pod before removing old one
+      maxUnavailable: 0    # zero downtime deploys
+  template:
+    metadata:
+      labels:
+        app: devmind-ai-app
+    spec:
+      containers:
+        - name: devmind-ai-app
+          image: devmind-ai-app:latest
+          imagePullPolicy: Never   # use local minikube image, don't pull from registry
+          ports:
+            - containerPort: 8080
+          # Inject config from our Terraform created ConfigMap
+          envFrom:
+            - configMapRef:
+                name: app-config
+          # Resource limits - how much CPU and RAM this app can use
+          resources:
+            requests:
+              cpu: "100m"       # 0.1 CPU core
+              memory: "64Mi"    # 64 MB RAM
+            limits:
+              cpu: "250m"       # 0.25 CPU core
+              memory: "128Mi"   # 128 MB RAM
+          # Liveness probe - is the app alive?
+          # Kubernetes restarts the pod if this fails
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          # Readiness probe - is the app ready to receive traffic?
+          # Kubernetes only sends traffic when this passes
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+---
+# Service - exposes our app so we can access it
+apiVersion: v1
+kind: Service
+metadata:
+  name: devmind-ai-app
+  namespace: devmind-ai
+spec:
+  selector:
+    app: devmind-ai-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort    # exposes on minikube IP so we can curl it locally
