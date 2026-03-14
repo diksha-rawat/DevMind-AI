@@ -57,13 +57,13 @@ AI posts a detailed review comment back on the PR
 ### ✅ Week 1 — Foundation
 - [x] Set up Minikube (local Kubernetes cluster)
 - [x] Set up Docker
-- [ ] Install and test Ollama + Mistral AI model
-- [ ] Install Terraform
+- [x] Install and test Ollama + Mistral AI model
+- [x] Install Terraform
 
 ### ⬜ Week 2 — Infrastructure as Code
-- [ ] Write Terraform to provision Kubernetes namespaces
+- [x] Write Terraform to provision Kubernetes namespaces
 - [ ] Set up RBAC (role-based access control) via Terraform
-- [ ] Deploy sample app to Kubernetes
+- [x] Deploy sample app to Kubernetes
 
 ### ⬜ Week 3 — AI Review Agent
 - [ ] Build Python agent that fetches GitHub PR diff
