@@ -48,8 +48,8 @@ AI posts a detailed review comment back on the PR
 | **Mistral** | The AI model that reviews code | ✅ Done |
 | **Terraform** | Provision Kubernetes resources as code | ✅ Done |
 | **Flask** | Sample app deployed to Kubernetes | ✅ Done |
+| **Python** | AI review agent code | ✅ Done |
 | **GitHub Actions** | CI/CD pipeline automation | 🚧 In Progress |
-| **Python** | AI review agent code | 🚧 In Progress |
 
 ---
 
@@ -66,10 +66,10 @@ AI posts a detailed review comment back on the PR
 - ⬜ Set up RBAC (role-based access control) via Terraform
 - ✅ Deploy sample app to Kubernetes
 
-### ⬜ Week 3 — AI Review Agent
-- ⬜ Build Python agent that fetches GitHub PR diff
-- ⬜ Send diff to local Ollama/Mistral for review
-- ⬜ Parse AI response and post back to GitHub as PR comment
+### ✅ Week 3 — AI Review Agent
+- ✅ Build Python agent that fetches GitHub PR diff
+- ✅ Send diff to local Ollama/Mistral for review
+- ✅ Parse AI response and post back to GitHub as PR comment
 
 ### ⬜ Week 4 — CI/CD Pipeline + Polish
 - ⬜ Build full GitHub Actions pipeline
