@@ -1,40 +1,36 @@
-# 🤖 Local AI Pipeline Orchestrator
-> **Status: 🚧 In Progress** — Building a fully local CI/CD pipeline with AI-powered code review
+# 🤖 DevMind-AI
 
-![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
+> A fully local AI-powered CI/CD pipeline that automatically reviews Pull Requests using Kubernetes, Terraform, and a locally hosted LLM — zero cloud cost, zero data leaving your machine.
+
+![Status](https://img.shields.io/badge/Status-Complete-green)
 ![DevOps](https://img.shields.io/badge/Domain-DevOps%20%2B%20AI-blue)
 ![Stack](https://img.shields.io/badge/Stack-Kubernetes%20%7C%20Docker%20%7C%20Terraform%20%7C%20Ollama-green)
+![CI](https://github.com/diksha-rawat/DevMind-AI/actions/workflows/pipeline.yml/badge.svg)
 
 ---
 
-## 💡 What This Project Is About
+## 💡 What This Project Does
 
 Most teams rely on expensive cloud AI APIs (like OpenAI) to automate code reviews.
 This project builds the same thing — but **100% locally on your own machine**, with zero cloud cost and zero data leaving your network.
 
 When a developer opens a Pull Request:
+
 ```
-Developer opens PR
-      ↓
-GitHub Actions triggers the pipeline
-      ↓
-Docker builds the application
-      ↓
-Kubernetes (minikube) deploys it
-      ↓
-Local AI model (Mistral via Ollama) reviews the code diff
-      ↓
-AI posts a detailed review comment back on the PR
+👨‍💻 Developer opens Pull Request
+               ↓
+⚙️  GitHub Actions triggers
+               ↓
+🐳  Docker builds the app
+               ↓
+☸️  Kubernetes deploys it
+               ↓
+🤖  Ollama + Mistral reviews the code diff
+               ↓
+💬  AI posts review comment on the PR
+               ↓
+👨‍💻  Developer gets feedback instantly
 ```
-
----
-
-## 🎯 Why I Am Building This
-
-- To demonstrate **AI + DevOps** skills in a single project
-- To show that AI-powered tooling doesn't require expensive cloud APIs
-- To learn and document **Kubernetes, Terraform, CI/CD and local LLMs** hands-on
-- To build something that solves a **real problem** companies face
 
 ---
 
@@ -49,7 +45,70 @@ AI posts a detailed review comment back on the PR
 | **Terraform** | Provision Kubernetes resources as code | ✅ Done |
 | **Flask** | Sample app deployed to Kubernetes | ✅ Done |
 | **Python** | AI review agent code | ✅ Done |
-| **GitHub Actions** | CI/CD pipeline automation | 🚧 In Progress |
+| **GitHub Actions** | CI/CD pipeline automation | ✅ Done |
+
+---
+
+## ⚡ Quick Start
+
+```bash
+# 1. Start minikube
+minikube start --cpus=2 --memory=4096 --driver=docker
+
+# 2. Apply Terraform
+cd terraform && terraform init && terraform apply
+
+# 3. Build and deploy the app
+eval $(minikube docker-env)
+docker build -t devmind-ai-app:latest ./app
+kubectl apply -f k8s/
+
+# 4. Run the AI review agent
+cd agent
+pip install -r requirements.txt
+export GITHUB_TOKEN=your_token
+python review.py --repo yourname/DevMind-AI --pr 1 --dry-run
+```
+
+---
+
+## 📁 Project Structure
+
+```
+DevMind-AI/
+├── .github/
+│   └── workflows/
+│       └── pipeline.yml      # CI/CD pipeline
+├── terraform/
+│   ├── main.tf               # K8s namespaces + ConfigMap
+│   └── variables.tf
+├── k8s/
+│   └── deployment.yaml       # Kubernetes manifests
+├── agent/
+│   ├── review.py             # AI code review agent
+│   ├── requirements.txt
+│   └── tests/
+│       └── test_review.py    # Agent unit tests
+├── app/
+│   ├── main.py               # Sample Flask app
+│   ├── Dockerfile
+│   └── requirements.txt
+└── README.md
+```
+
+---
+
+## 🧠 Key Concepts
+
+**Kubernetes** — Container orchestration. Manages deploying, scaling and running containers across a cluster of machines.
+
+**Terraform** — Infrastructure as Code. Write configuration files and Terraform creates your infrastructure automatically.
+
+**Ollama** — Run open-source AI models locally on your own machine, without needing cloud AI APIs.
+
+**Mistral** — An open-source AI language model that understands and reviews code. Runs via Ollama on a standard laptop.
+
+**GitHub Actions** — CI/CD automation built into GitHub. Automatically runs tests and builds Docker images on every code push.
 
 ---
 
@@ -61,9 +120,8 @@ AI posts a detailed review comment back on the PR
 - ✅ Install and test Ollama + Mistral AI model
 - ✅ Install Terraform
 
-### 🚧 Week 2 — Infrastructure as Code
+### ✅ Week 2 — Infrastructure as Code
 - ✅ Write Terraform to provision Kubernetes namespaces
-- ⬜ Set up RBAC (role-based access control) via Terraform
 - ✅ Deploy sample app to Kubernetes
 
 ### ✅ Week 3 — AI Review Agent
@@ -71,60 +129,17 @@ AI posts a detailed review comment back on the PR
 - ✅ Send diff to local Ollama/Mistral for review
 - ✅ Parse AI response and post back to GitHub as PR comment
 
-### ⬜ Week 4 — CI/CD Pipeline + Polish
-- ⬜ Build full GitHub Actions pipeline
-- ⬜ Record demo GIF
-- ⬜ Write full documentation
-
----
-
-## 🧠 Key Concepts I Am Learning
-
-**Kubernetes** — Container orchestration. Manages deploying, scaling and running containers across a cluster of machines.
-
-**Terraform** — Infrastructure as Code tool. Instead of manually setting up servers or clusters, you write configuration files and Terraform creates everything automatically.
-
-**Ollama** — A tool that lets you run open-source AI models (like Mistral) locally on your own machine, without needing cloud AI APIs.
-
-**Mistral** — An open-source AI language model that is good at understanding and reviewing code. Runs via Ollama on a standard laptop.
-
-**GitHub Actions** — CI/CD automation built into GitHub. Automatically runs tests, builds Docker images and deploys to Kubernetes on every code push.
-
----
-
-## 🏗 Project Structure (planned)
-
-```
-local-ai-pipeline/
-├── .github/
-│   └── workflows/
-│       └── pipeline.yml      # CI/CD pipeline
-├── terraform/
-│   ├── main.tf               # K8s namespaces + RBAC
-│   └── variables.tf
-├── k8s/
-│   └── deployment.yaml       # Kubernetes manifests
-├── agent/
-│   └── review.py             # AI code review agent
-├── app/
-│   ├── main.py               # Sample Flask app
-│   └── Dockerfile
-└── README.md
-```
-
----
-
-## 💬 Follow Along
-
-I am building this step by step and documenting everything I learn.
-If you are also learning DevOps + AI, feel free to star ⭐ the repo and follow along!
+### ✅ Week 4 — CI/CD Pipeline + Polish
+- ✅ Build full GitHub Actions pipeline
+- ✅ Write full documentation
 
 ---
 
 ## 📬 Connect With Me
 
-- [Diksha Rawat](https://linkedin.com/in/diksharawat) | LinkedIn
+[Diksha Rawat](https://linkedin.com/in/diksharawat) | LinkedIn  
+[dev.to/diksharawat](https://dev.to/diksharawat) | Dev.to
 
 ---
 
-*This project is actively being built. Last updated: March 2026*
+*Built with curiosity and open source tools 🚀*
